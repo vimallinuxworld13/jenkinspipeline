@@ -1,0 +1,19 @@
+pipeline {
+agent any
+
+
+
+stages {
+	stage("Build1") {
+		steps {
+			timeout(time:5, unit:'DAYS'){
+				input message: 'approve prod deploy ?'
+			}			
+
+			build job: 'a10'
+			}
+		}
+
+	}
+
+}
