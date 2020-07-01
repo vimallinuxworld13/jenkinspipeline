@@ -1,0 +1,66 @@
+pipeline {
+agent any
+
+environment {
+	NAME='Vimal'
+	LNAME='Daga'
+	secret= credentials('TEST')
+}
+
+stages {
+	stage("Build") {
+		steps {
+			echo "Building .. $NAME $LNAME"
+			echo "$secret"
+			sleep 5
+			}
+	}
+
+	stage("Test") {
+		steps {
+			echo "Testing .."
+			sleep 5
+			}
+	}
+
+	stage("Deploy") {
+		steps {
+			echo "Deploying .."
+			sleep 5
+			}
+	}
+
+	stage("Timeout") {
+		steps {
+			retry(3){
+				echo "trying 3 times .."
+			}
+			timeout(time:3, unit:'SECONDS') {
+				sh 'sleep 5'
+			}
+
+			}
+	}
+
+}
+
+post {
+	always {
+		echo "always executed .."
+	}
+
+	success {
+		echo "success executed .."
+	}
+
+	failure {
+		echo "failure executed .."
+	}
+
+	unstable {
+		echo "unstable executed .."
+	}
+}
+
+
+}
